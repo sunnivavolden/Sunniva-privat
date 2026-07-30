@@ -459,6 +459,7 @@ const sharedStays: SharedStay[] = [
 const hotelVisuals: Record<string, string> = {
   "dusit-krabi": "/dusit-krabi.jpg",
   "lanta-sand": "/lanta-sand.jpg",
+  "long-beach-chalet": "/Sunniva-privat/long-beach-chalet.jpg",
 };
 
 const navItems: Array<{ view: MainView; label: string; icon: string }> = [
@@ -1944,11 +1945,16 @@ export default function Home() {
               <article className={`hotel-card ${selected ? "selected" : ""}`} key={hotel.id}>
                 <div className={`hotel-card-image ${hotelVisuals[hotel.id] ? "" : "hotel-card-image-placeholder"}`}>
                   {hotelVisuals[hotel.id] ? (
-                    <img
-                      src={imageUrl(hotelVisuals[hotel.id])}
-                      alt={`${hotel.name} i ${hotel.area}`}
-                      loading="lazy"
-                    />
+                    <>
+                      <img
+                        src={imageUrl(hotelVisuals[hotel.id])}
+                        alt={`${hotel.name} i ${hotel.area}`}
+                        loading="lazy"
+                      />
+                      {hotel.id === "long-beach-chalet" && (
+                        <small className="hotel-photo-credit">Foto: Long Beach Chalet</small>
+                      )}
+                    </>
                   ) : (
                     <div className="hotel-photo-pending" aria-label={`Bilde av ${hotel.name} er ikke lagt inn ennå`}>
                       <small>HOTELLBILDE KOMMER</small>
