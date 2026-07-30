@@ -212,7 +212,7 @@ type Hotel = {
   id: string;
   place: HotelPlace;
   name: string;
-  stars: 4 | 5;
+  stars: 3 | 4 | 5;
   area: string;
   beach: string;
   family: string;
@@ -223,6 +223,9 @@ type Hotel = {
   watch: string;
   url: string;
   pick?: string;
+  reviewScore?: number;
+  reviewCount?: number;
+  reviewSource?: string;
 };
 
 type SharedStay = {
@@ -469,6 +472,43 @@ const navItems: Array<{ view: MainView; label: string; icon: string }> = [
 
 const hotels: Hotel[] = [
   {
+    id: "andaman-pearl",
+    place: "krabi",
+    name: "Andaman Pearl Resort",
+    stars: 3,
+    area: "Rolig del av Ao Nang",
+    beach: "Ca. 5 minutter med bil til Ao Nang Beach",
+    family: "Rolig hage, basseng og store rom; best for familier som vil ha en fredelig base",
+    room: "Rom med balkong; bekreft familierom eller ekstrasenger for fire",
+    pools: "Utendørsbasseng med utsikt mot kalksteinsklippene",
+    price: "€€",
+    best: "Ren og rolig base med svært gode anmeldelser",
+    watch: "Ikke i gangavstand til stranden for små barn; beregn transport.",
+    url: "https://www.booking.com/hotel/th/andaman-pearl-resort.html",
+    pick: "3-stjerners kvalitetsvalg",
+    reviewScore: 8.7,
+    reviewCount: 1213,
+    reviewSource: "Booking.com",
+  },
+  {
+    id: "phu-pha-aonang",
+    place: "krabi",
+    name: "Phu Pha Aonang Resort & Spa",
+    stars: 3,
+    area: "Ao Nang, ved kalksteinsklippene",
+    beach: "Kort transport eller en lengre spasertur til Ao Nang Beach",
+    family: "Tropisk hage, basseng og roligere omgivelser enn hovedgaten",
+    room: "Thai-inspirerte rom og bungalower; kapasitet for fire må bekreftes",
+    pools: "Utendørsbasseng i hagen",
+    price: "€€",
+    best: "Mye atmosfære og gode anmeldelser til moderat pris",
+    watch: "Mindre praktisk enn et sentralt strandhotell med vogn og små barn.",
+    url: "https://www.booking.com/hotel/th/phu-pha-aonang-resort-spa.html",
+    reviewScore: 8.6,
+    reviewCount: 2225,
+    reviewSource: "Booking.com",
+  },
+  {
     id: "holiday-ao-nang",
     place: "krabi",
     name: "Holiday Ao Nang Beach Resort",
@@ -545,6 +585,43 @@ const hotels: Hotel[] = [
     best: "Mest spektakulær beliggenhet",
     watch: "Adkomst hovedsakelig med hotellbåt; mindre praktisk med vogn og små barn.",
     url: "https://www.centarahotelsresorts.com/centaragrand/ckbr",
+  },
+  {
+    id: "twin-bay-lanta",
+    place: "lanta",
+    name: "Twin Bay Resort Koh Lanta",
+    stars: 3,
+    area: "Kaw Kwang, nord på Koh Lanta",
+    beach: "Direkte ved rolig strand",
+    family: "Rolig anlegg, basseng og kortere vei til Saladan enn mange sør-alternativer",
+    room: "Bungalower og familieløsninger; kontroller konkret romtype for fire",
+    pools: "Utendørsbasseng nær stranden",
+    price: "€€",
+    best: "Svært sterke anmeldelser, strand og ro til god pris",
+    watch: "Færre restauranter rett utenfor enn ved Klong Dao og Long Beach.",
+    url: "https://www.booking.com/hotel/th/twin-bay-resort.html",
+    pick: "3-stjerners kvalitetsvalg",
+    reviewScore: 9.1,
+    reviewCount: 1010,
+    reviewSource: "Booking.com",
+  },
+  {
+    id: "coco-lanta",
+    place: "lanta",
+    name: "Coco Lanta Resort",
+    stars: 3,
+    area: "Klong Khong Beach",
+    beach: "Direkte ved Klong Khong Beach",
+    family: "Kompakt resort, basseng og enkel strandhverdag",
+    room: "Bungalower og familierom; sjekk sengeoppsett for to små barn",
+    pools: "Utendørsbasseng",
+    price: "€€",
+    best: "Rent, hyggelig og svært godt anmeldt mellomklassevalg",
+    watch: "Klong Khong er steinete ved lavvann og mindre badevennlig enn Klong Dao.",
+    url: "https://www.cocolanta.com/",
+    reviewScore: 9.1,
+    reviewCount: 1050,
+    reviewSource: "Booking.com",
   },
   {
     id: "lanta-sand",
@@ -1283,6 +1360,7 @@ export default function Home() {
   const [month, setMonth] = useState("");
   const [selectedActivities, setSelectedActivities] = useState<string[]>(selectedByDefault);
   const [hotelPlace, setHotelPlace] = useState<HotelPlace>("krabi");
+  const [hotelStars, setHotelStars] = useState<Array<3 | 4 | 5>>([3, 4, 5]);
   const [shortlist, setShortlist] = useState<string[]>(["holiday-ao-nang", "dusit-krabi"]);
   const [mapHotelId, setMapHotelId] = useState("holiday-ao-nang");
   const [adultCount, setAdultCount] = useState(2);
@@ -1463,7 +1541,13 @@ export default function Home() {
       : [...current, category]);
   };
 
-  const visibleHotels = hotels.filter((hotel) => hotel.place === hotelPlace);
+  const toggleHotelStars = (stars: 3 | 4 | 5) => {
+    setHotelStars((current) => current.includes(stars)
+      ? current.length === 1 ? current : current.filter((value) => value !== stars)
+      : [...current, stars].sort());
+  };
+
+  const visibleHotels = hotels.filter((hotel) => hotel.place === hotelPlace && hotelStars.includes(hotel.stars));
   const comparedHotels = hotels.filter((hotel) => shortlist.includes(hotel.id));
 
   const changeView = (view: MainView) => {
@@ -1831,6 +1915,26 @@ export default function Home() {
           <button className={hotelPlace === "krabi" ? "active" : ""} onClick={() => setHotelPlace("krabi")}>Krabi / Ao Nang · 5 netter</button>
           <button className={hotelPlace === "lanta" ? "active" : ""} onClick={() => setHotelPlace("lanta")}>Koh Lanta · 7 netter</button>
         </div>
+        <div className="hotel-filter-row">
+          <div>
+            <span>FILTRER ETTER STANDARD</span>
+            <strong>Velg én eller flere hotellklasser</strong>
+          </div>
+          <div className="hotel-star-filters" aria-label="Filtrer hoteller etter antall stjerner">
+            {([3, 4, 5] as const).map((stars) => (
+              <button
+                type="button"
+                key={stars}
+                className={hotelStars.includes(stars) ? "active" : ""}
+                aria-pressed={hotelStars.includes(stars)}
+                onClick={() => toggleHotelStars(stars)}
+              >
+                <span>{"★".repeat(stars)}</span>
+                {stars} stjerner
+              </button>
+            ))}
+          </div>
+        </div>
         <p className="hotel-value-note"><strong>Prisnivå:</strong> €€ = smart/mellomklasse · €€€ = komfort · €€€€ = luksus. Merkene viser relativ verdi mot de andre hotellene på samme reisemål.</p>
 
         <div className="hotel-grid">
@@ -1862,6 +1966,12 @@ export default function Home() {
                 {hotel.pick && <span className="hotel-pick">{hotel.pick}</span>}
                 <h3>{hotel.name}</h3>
                 <p className="hotel-area">{hotel.area}</p>
+                {hotel.reviewScore && hotel.reviewCount && (
+                  <p className="hotel-review">
+                    <strong>{hotel.reviewScore.toLocaleString("nb-NO")} / 10</strong>
+                    <span>{hotel.reviewCount.toLocaleString("nb-NO")} anmeldelser · {hotel.reviewSource}</span>
+                  </p>
+                )}
                 <dl>
                   <div><dt>Strand</dt><dd>{hotel.beach}</dd></div>
                   <div><dt>For barna</dt><dd>{hotel.family}</dd></div>
@@ -1910,7 +2020,7 @@ export default function Home() {
             <a href="#kart" onClick={() => setMapHotelId("hyatt-bkk")}>Vis på kartet ↓</a>
           </div>
         </aside>
-        <p className="hotel-source-note">Stjerner, fasiliteter og plassering er kontrollert mot hotellenes egne nettsider. 2028-priser er ikke publisert; prisnivåene er derfor relative planleggingsnivåer. Sammenlign totalpris for riktig familierom, frokost og avbestillingsvilkår – ikke bare laveste annonserte dobbeltrom.</p>
+        <p className="hotel-source-note">Trestjernersalternativene er et kuratert kvalitetsutvalg med høy gjestevurdering og mange anmeldelser – ikke en liste over alle rimelige hoteller. Anmeldelsestall er kontrollert 30. juli 2026 og vil endre seg. 2028-priser er ikke publisert; sammenlign derfor totalpris for riktig familierom, frokost og avbestillingsvilkår.</p>
         </div>
 
         <section className={`shared-stay ${stayView === "airbnb" ? "active" : ""}`} aria-labelledby="shared-stay-title">
