@@ -450,14 +450,12 @@ const sharedStays: SharedStay[] = [
   },
 ];
 
+// Only show a hotel photo when the asset has been verified for that exact hotel.
+// A destination fallback here is misleading because it makes several different
+// properties appear to share the same rooms, pool or beach.
 const hotelVisuals: Record<string, string> = {
   "dusit-krabi": "/dusit-krabi.jpg",
   "lanta-sand": "/lanta-sand.jpg",
-};
-
-const hotelFallbackVisuals: Record<HotelPlace, string> = {
-  krabi: "/resort-family.jpg",
-  lanta: "/tropical-resort.jpg",
 };
 
 const navItems: Array<{ view: MainView; label: string; icon: string }> = [
@@ -1840,12 +1838,20 @@ export default function Home() {
             const selected = shortlist.includes(hotel.id);
             return (
               <article className={`hotel-card ${selected ? "selected" : ""}`} key={hotel.id}>
-                <div className="hotel-card-image">
-                  <img
-                    src={imageUrl(hotelVisuals[hotel.id] || hotelFallbackVisuals[hotel.place])}
-                    alt={`${hotel.name} i ${hotel.area}`}
-                    loading="lazy"
-                  />
+                <div className={`hotel-card-image ${hotelVisuals[hotel.id] ? "" : "hotel-card-image-placeholder"}`}>
+                  {hotelVisuals[hotel.id] ? (
+                    <img
+                      src={imageUrl(hotelVisuals[hotel.id])}
+                      alt={`${hotel.name} i ${hotel.area}`}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="hotel-photo-pending" aria-label={`Bilde av ${hotel.name} er ikke lagt inn ennå`}>
+                      <small>HOTELLBILDE KOMMER</small>
+                      <strong>{hotel.name}</strong>
+                      <em>Vi viser ikke et generelt bilde som om det tilhører hotellet.</em>
+                    </div>
+                  )}
                   <span>{hotel.place === "krabi" ? "Krabi / Ao Nang" : "Koh Lanta"}</span>
                   {selected && <b>Valgt ✓</b>}
                 </div>
