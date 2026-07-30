@@ -2198,3 +2198,151 @@ body {
   .hotel-card { min-width: 0; }
   .hotel-card-image { height: 205px; }
 }
+
+/* Contrast repair: the light recommendation surface must never inherit the
+   former white-on-navy packing-card typography. */
+.personal-note {
+  background: #e4f1ef;
+  color: var(--ink);
+  border: 1px solid rgba(21,140,145,.16);
+}
+.personal-note h3 { color: var(--ink); }
+.personal-note p { color: rgba(12,44,75,.7); }
+
+/* Hotels without a verified property-specific asset get an honest editorial
+   placeholder instead of another hotel's or a generic resort photo. */
+.hotel-card-image-placeholder {
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255,255,255,.75) 0 8%, transparent 8.5%),
+    linear-gradient(135deg, #dcefed 0%, #c6dfdf 52%, #a9ceca 100%);
+}
+.hotel-card-image-placeholder:after {
+  background: linear-gradient(0deg, rgba(8,39,65,.28), transparent 58%);
+}
+.hotel-photo-pending {
+  height: 100%;
+  padding: 31px 26px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--ink);
+}
+.hotel-photo-pending small {
+  color: var(--teal);
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .13em;
+}
+.hotel-photo-pending strong {
+  max-width: 280px;
+  margin-top: 9px;
+  font-family: Georgia, serif;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.06;
+}
+.hotel-photo-pending em {
+  max-width: 310px;
+  margin-top: 10px;
+  color: rgba(12,44,75,.62);
+  font-size: 9px;
+  font-style: normal;
+  line-height: 1.45;
+}
+
+/* Lighter budget workspace. Keep the calculator structure, but move the
+   information onto calm, readable cards instead of one heavy navy block. */
+.app-shell.view-budget .planner {
+  background: #f6f1e8;
+  color: var(--ink);
+}
+.app-shell.view-budget .planner h2 { color: var(--ink); }
+.app-shell.view-budget .section-number.light { color: var(--coral); }
+.app-shell.view-budget .family-picker,
+.app-shell.view-budget .month-picker,
+.app-shell.view-budget .budget-panel,
+.app-shell.view-budget .activity-panel {
+  border: 1px solid rgba(12,44,75,.11);
+  background: rgba(255,253,248,.94);
+  color: var(--ink);
+  box-shadow: var(--shadow-soft);
+}
+.app-shell.view-budget .planner-grid {
+  gap: 20px;
+  border: 0;
+}
+.app-shell.view-budget .budget-panel { border-right: 1px solid rgba(12,44,75,.11); }
+.app-shell.view-budget .settings-label,
+.app-shell.view-budget .month-picker label,
+.app-shell.view-budget .traveler-counter small,
+.app-shell.view-budget .panel-title span,
+.app-shell.view-budget .comfort-options legend,
+.app-shell.view-budget .comfort-options small,
+.app-shell.view-budget .budget-total > span,
+.app-shell.view-budget .budget-total small,
+.app-shell.view-budget .budget-row summary small,
+.app-shell.view-budget .estimate-note,
+.app-shell.view-budget .activity-intro,
+.app-shell.view-budget .filter-label,
+.app-shell.view-budget .filter-selects label,
+.app-shell.view-budget .suitable-toggle {
+  color: rgba(12,44,75,.56);
+}
+.app-shell.view-budget .traveler-counter,
+.app-shell.view-budget .activity-filters {
+  border-color: rgba(12,44,75,.11);
+  background: #f7f2e8;
+}
+.app-shell.view-budget .count-stepper {
+  border-color: rgba(12,44,75,.18);
+  background: white;
+}
+.app-shell.view-budget .count-stepper button { color: var(--ink); }
+.app-shell.view-budget .count-stepper button:hover:not(:disabled) { background: #e4f1ef; }
+.app-shell.view-budget .count-stepper button:focus-visible,
+.app-shell.view-budget .flight-toggle input:focus-visible + .toggle-track {
+  outline-color: var(--teal);
+}
+.app-shell.view-budget .age-pickers label { color: rgba(12,44,75,.56); }
+.app-shell.view-budget .age-pickers select,
+.app-shell.view-budget .month-picker select,
+.app-shell.view-budget .filter-selects select {
+  border-color: rgba(12,44,75,.18);
+  background: white;
+  color: var(--ink);
+}
+.app-shell.view-budget .month-note { background: #f7f2e8; }
+.app-shell.view-budget .month-note p { color: rgba(12,44,75,.66); }
+.app-shell.view-budget .comfort-options label {
+  border-color: rgba(12,44,75,.12);
+  background: white;
+}
+.app-shell.view-budget .comfort-options label:last-child { border-bottom-color: rgba(12,44,75,.12); }
+.app-shell.view-budget .comfort-options label.checked {
+  border-color: var(--teal);
+  background: #e4f1ef;
+}
+.app-shell.view-budget .toggle-track { border-color: rgba(12,44,75,.28); background: white; }
+.app-shell.view-budget .toggle-track span { background: rgba(12,44,75,.4); }
+.app-shell.view-budget .budget-total {
+  border-color: rgba(12,44,75,.13);
+}
+.app-shell.view-budget .budget-total strong,
+.app-shell.view-budget .budget-row strong { color: var(--ink); }
+.app-shell.view-budget .budget-row { border-color: rgba(12,44,75,.1); }
+.app-shell.view-budget .budget-row summary > div:first-child { color: rgba(12,44,75,.82); }
+.app-shell.view-budget .budget-row summary > div:first-child > span::before { color: var(--teal); }
+.app-shell.view-budget .budget-bar { background: rgba(12,44,75,.09); }
+.app-shell.view-budget .budget-details { background: #f7f2e8; }
+.app-shell.view-budget .budget-details > div { color: rgba(12,44,75,.64); }
+.app-shell.view-budget .filter-chips button {
+  border-color: rgba(12,44,75,.2);
+  color: rgba(12,44,75,.76);
+}
+.app-shell.view-budget .activity-item { border-color: rgba(12,44,75,.12); }
+.app-shell.view-budget .custom-check {
+  border-color: rgba(12,44,75,.25);
+  color: rgba(12,44,75,.5);
+}
+.app-shell.view-budget .activity-copy strong,
+.app-shell.view-budget .activity-price { color: var(--ink); }
